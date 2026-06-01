@@ -1,0 +1,1650 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Asking for Directions - Complete Interactive Lesson</title>
+  <style>
+    :root {
+      --primary: #2563eb;
+      --primary-dark: #1d4ed8;
+      --primary-light: #dbeafe;
+      --secondary: #0f172a;
+      --accent: #f59e0b;
+      --accent-light: #fef3c7;
+      --success: #10b981;
+      --danger: #ef4444;
+      --purple: #8b5cf6;
+      --pink: #ec4899;
+      --bg: #f1f5f9;
+      --card-bg: #ffffff;
+      --text: #1e293b;
+      --text-light: #64748b;
+      --border: #e2e8f0;
+      --radius: 16px;
+      --shadow: 0 10px 15px -3px rgba(0,0,0,0.1), 0 4px 6px -2px rgba(0,0,0,0.05);
+      --shadow-hover: 0 20px 25px -5px rgba(0,0,0,0.1), 0 10px 10px -5px rgba(0,0,0,0.04);
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    
+    body {
+      font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      color: var(--text);
+      line-height: 1.6;
+      padding: 0;
+      min-height: 100vh;
+    }
+
+    .container {
+      max-width: 1100px;
+      margin: 0 auto;
+      padding: 20px;
+    }
+
+    /* Header Styles */
+    header {
+      text-align: center;
+      padding: 3rem 1.5rem;
+      background: var(--card-bg);
+      border-radius: var(--radius);
+      margin-bottom: 2rem;
+      box-shadow: var(--shadow);
+      position: relative;
+      overflow: hidden;
+    }
+
+    header::before {
+      content: "🗺️";
+      position: absolute;
+      font-size: 15rem;
+      opacity: 0.03;
+      top: -2rem;
+      right: -2rem;
+      transform: rotate(15deg);
+    }
+
+    header h1 {
+      font-size: 2.8rem;
+      background: linear-gradient(135deg, var(--primary), #7c3aed);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      margin-bottom: 0.5rem;
+      font-weight: 800;
+    }
+
+    header p {
+      font-size: 1.2rem;
+      color: var(--text-light);
+      max-width: 600px;
+      margin: 0 auto;
+    }
+
+    .level-badge {
+      display: inline-block;
+      background: var(--primary-light);
+      color: var(--primary);
+      padding: 0.4rem 1rem;
+      border-radius: 20px;
+      font-weight: 600;
+      margin-top: 1rem;
+      font-size: 0.9rem;
+    }
+
+    /* Section Styles */
+    .section {
+      background: var(--card-bg);
+      border-radius: var(--radius);
+      padding: 2rem;
+      margin-bottom: 2rem;
+      box-shadow: var(--shadow);
+      transition: all 0.3s ease;
+    }
+
+    .section:hover {
+      transform: translateY(-3px);
+      box-shadow: var(--shadow-hover);
+    }
+
+    h2 {
+      color: var(--secondary);
+      font-size: 1.8rem;
+      margin-bottom: 1.5rem;
+      display: flex;
+      align-items: center;
+      gap: 0.7rem;
+      padding-bottom: 0.8rem;
+      border-bottom: 3px solid var(--primary-light);
+    }
+
+    h3 {
+      color: var(--primary-dark);
+      font-size: 1.3rem;
+      margin: 1.5rem 0 0.8rem 0;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+
+    /* Grid Layouts */
+    .grid-2 {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+      gap: 1.5rem;
+    }
+
+    .grid-3 {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+      gap: 1.2rem;
+    }
+
+    /* Card Styles */
+    .card {
+      background: #f8fafc;
+      border-radius: 12px;
+      padding: 1.3rem;
+      border-left: 5px solid var(--primary);
+      transition: all 0.2s ease;
+    }
+
+    .card:hover {
+      background: var(--primary-light);
+      transform: translateX(5px);
+    }
+
+    .card h4 {
+      color: var(--primary-dark);
+      margin-bottom: 0.5rem;
+      font-size: 1.1rem;
+      display: flex;
+      align-items: center;
+      gap: 0.4rem;
+    }
+
+    .card p, .card ul {
+      color: var(--text);
+      font-size: 0.95rem;
+    }
+
+    .card ul {
+      margin-left: 1.3rem;
+      margin-top: 0.5rem;
+    }
+
+    .card li {
+      margin: 0.3rem 0;
+    }
+
+    /* Visual Compass */
+    .compass-container {
+      display: flex;
+      justify-content: center;
+      margin: 2rem 0;
+      padding: 1.5rem;
+      background: linear-gradient(135deg, #f0f9ff, #e0f2fe);
+      border-radius: 12px;
+    }
+
+    .compass {
+      width: 200px;
+      height: 200px;
+      position: relative;
+      background: white;
+      border-radius: 50%;
+      box-shadow: 0 8px 16px rgba(0,0,0,0.1);
+      border: 4px solid var(--primary);
+    }
+
+    .compass-center {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      width: 20px;
+      height: 20px;
+      background: var(--accent);
+      border-radius: 50%;
+      z-index: 10;
+    }
+
+    .compass-dir {
+      position: absolute;
+      font-weight: bold;
+      color: var(--primary);
+      font-size: 1.2rem;
+    }
+
+    .compass-n { top: 10px; left: 50%; transform: translateX(-50%); }
+    .compass-s { bottom: 10px; left: 50%; transform: translateX(-50%); }
+    .compass-e { right: 15px; top: 50%; transform: translateY(-50%); }
+    .compass-w { left: 15px; top: 50%; transform: translateY(-50%); }
+
+    .compass-arrow {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      width: 4px;
+      height: 70px;
+      background: var(--danger);
+      transform-origin: center top;
+      transform: translate(-50%, 0) rotate(-30deg);
+      border-radius: 2px;
+    }
+
+    .compass-arrow::after {
+      content: "▲";
+      position: absolute;
+      top: -8px;
+      left: 50%;
+      transform: translateX(-50%);
+      color: var(--danger);
+      font-size: 1.2rem;
+    }
+
+    /* Phrase Box with Audio */
+    .phrase-box {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      background: linear-gradient(135deg, var(--primary-light), #e0e7ff);
+      padding: 1rem 1.2rem;
+      margin: 0.7rem 0;
+      border-radius: 10px;
+      border-left: 4px solid var(--primary);
+      flex-wrap: wrap;
+      gap: 0.8rem;
+      transition: all 0.2s ease;
+    }
+
+    .phrase-box:hover {
+      transform: translateX(5px);
+      box-shadow: 0 4px 8px rgba(37, 99, 235, 0.2);
+    }
+
+    .phrase-content {
+      flex: 1;
+      min-width: 200px;
+    }
+
+    .phrase-text {
+      font-weight: 600;
+      font-size: 1.05rem;
+      color: var(--secondary);
+      margin-bottom: 0.2rem;
+    }
+
+    .phrase-category {
+      font-size: 0.8rem;
+      color: var(--text-light);
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+
+    .audio-btn {
+      background: linear-gradient(135deg, var(--accent), #fbbf24);
+      color: white;
+      border: none;
+      padding: 0.6rem 1.2rem;
+      border-radius: 25px;
+      cursor: pointer;
+      font-size: 0.9rem;
+      font-weight: 600;
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      transition: all 0.2s ease;
+      box-shadow: 0 4px 6px rgba(245, 158, 11, 0.3);
+    }
+
+    .audio-btn:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 6px 12px rgba(245, 158, 11, 0.4);
+    }
+
+    .audio-btn:active {
+      transform: translateY(0);
+    }
+
+    .speaker-icon {
+      font-size: 1.2rem;
+    }
+
+    /* Enhanced Visual Map */
+    .map-visual {
+      background: linear-gradient(135deg, #faf5ff, #f3e8ff);
+      border: 3px solid var(--purple);
+      border-radius: 16px;
+      padding: 2rem;
+      margin: 1.5rem 0;
+      position: relative;
+      box-shadow: 0 8px 16px rgba(139, 92, 246, 0.15);
+    }
+
+    .map-title {
+      text-align: center;
+      font-weight: 700;
+      color: var(--purple);
+      margin-bottom: 1.5rem;
+      font-size: 1.4rem;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 0.5rem;
+    }
+
+    .map-grid {
+      display: grid;
+      grid-template-columns: repeat(5, 1fr);
+      gap: 12px;
+      max-width: 700px;
+      margin: 0 auto;
+    }
+
+    .map-cell {
+      aspect-ratio: 1;
+      background: white;
+      border: 3px solid #e9d5ff;
+      border-radius: 12px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.8rem;
+      position: relative;
+      transition: all 0.3s ease;
+      box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+      padding: 0.3rem;
+    }
+
+    .map-cell:hover {
+      transform: scale(1.08) rotate(2deg);
+      z-index: 10;
+      box-shadow: 0 8px 16px rgba(139, 92, 246, 0.3);
+      border-color: var(--purple);
+    }
+
+    .map-cell.start { 
+      background: linear-gradient(135deg, #dbeafe, #bfdbfe); 
+      border-color: var(--primary);
+      animation: pulse 2s infinite;
+    }
+    
+    .map-cell.destination { 
+      background: linear-gradient(135deg, #fef3c7, #fde68a); 
+      border-color: var(--accent);
+    }
+    
+    .map-cell.landmark { 
+      background: linear-gradient(135deg, #d1fae5, #a7f3d0); 
+      border-color: var(--success);
+    }
+    
+    .map-cell.street { 
+      background: linear-gradient(135deg, #f1f5f9, #e2e8f0);
+      border-color: #cbd5e1;
+    }
+
+    .map-cell.shop {
+      background: linear-gradient(135deg, #fce7f3, #fbcfe8);
+      border-color: var(--pink);
+    }
+
+    @keyframes pulse {
+      0%, 100% { box-shadow: 0 0 0 0 rgba(37, 99, 235, 0.4); }
+      50% { box-shadow: 0 0 0 10px rgba(37, 99, 235, 0); }
+    }
+
+    .map-cell-icon {
+      font-size: 1.6rem;
+      margin-bottom: 0.2rem;
+    }
+
+    .map-cell-label {
+      font-size: 0.65rem;
+      font-weight: 700;
+      color: var(--secondary);
+      text-align: center;
+      line-height: 1.1;
+      text-transform: uppercase;
+      letter-spacing: 0.3px;
+    }
+
+    .map-legend {
+      display: flex;
+      justify-content: center;
+      gap: 1.5rem;
+      margin-top: 2rem;
+      flex-wrap: wrap;
+    }
+
+    .legend-item {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      font-size: 0.85rem;
+      color: var(--text);
+      background: white;
+      padding: 0.4rem 0.8rem;
+      border-radius: 20px;
+      box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+    }
+
+    .legend-color {
+      width: 16px;
+      height: 16px;
+      border-radius: 4px;
+      border: 2px solid;
+    }
+
+    .map-instructions {
+      background: white;
+      border-radius: 12px;
+      padding: 1.5rem;
+      margin-top: 2rem;
+      border-left: 5px solid var(--purple);
+      box-shadow: 0 4px 6px rgba(0,0,0,0.05);
+    }
+
+    .map-instructions h4 {
+      color: var(--purple);
+      margin-bottom: 0.8rem;
+      font-size: 1.1rem;
+    }
+
+    .map-instructions ol {
+      margin-left: 1.5rem;
+      color: var(--text);
+    }
+
+    .map-instructions li {
+      margin: 0.5rem 0;
+      padding-left: 0.5rem;
+    }
+
+    /* Dialogue Box */
+    .dialogue-box {
+      background: linear-gradient(135deg, #fef9c3, #fef3c7);
+      border-left: 5px solid var(--accent);
+      border-radius: 12px;
+      padding: 1.5rem;
+      margin: 1rem 0;
+    }
+
+    .dialogue-line {
+      margin: 0.8rem 0;
+      padding: 0.6rem;
+      background: white;
+      border-radius: 8px;
+      display: flex;
+      gap: 0.8rem;
+      align-items: flex-start;
+    }
+
+    .speaker {
+      font-weight: 700;
+      min-width: 80px;
+      color: var(--primary-dark);
+    }
+
+    .dialogue-text {
+      flex: 1;
+    }
+
+    /* Mistake/Correct Table */
+    .comparison-table {
+      width: 100%;
+      border-collapse: separate;
+      border-spacing: 0;
+      margin: 1rem 0;
+      border-radius: 12px;
+      overflow: hidden;
+      box-shadow: 0 4px 6px rgba(0,0,0,0.05);
+    }
+
+    .comparison-table th {
+      background: var(--secondary);
+      color: white;
+      padding: 1rem;
+      text-align: left;
+      font-weight: 600;
+    }
+
+    .comparison-table td {
+      padding: 1rem;
+      border-bottom: 1px solid var(--border);
+      background: white;
+    }
+
+    .comparison-table tr:last-child td {
+      border-bottom: none;
+    }
+
+    .comparison-table tr:nth-child(even) td {
+      background: #f8fafc;
+    }
+
+    .mistake {
+      color: var(--danger);
+      text-decoration: line-through;
+      font-weight: 500;
+    }
+
+    .correct {
+      color: var(--success);
+      font-weight: 600;
+    }
+
+    /* Tip Box */
+    .tip-box {
+      background: linear-gradient(135deg, var(--accent-light), #fff7ed);
+      border-left: 5px solid var(--accent);
+      padding: 1.2rem;
+      border-radius: 0 12px 12px 0;
+      margin: 1.2rem 0;
+      display: flex;
+      gap: 1rem;
+      align-items: flex-start;
+    }
+
+    .tip-icon {
+      font-size: 2rem;
+      flex-shrink: 0;
+    }
+
+    .tip-content h4 {
+      color: var(--secondary);
+      margin-bottom: 0.3rem;
+    }
+
+    .tip-content p {
+      color: var(--text);
+    }
+
+    /* Activity Box */
+    .activity-box {
+      background: linear-gradient(135deg, #e0f2fe, #dbeafe);
+      border: 2px dashed var(--primary);
+      border-radius: 12px;
+      padding: 1.5rem;
+      margin: 1rem 0;
+    }
+
+    .activity-box h4 {
+      color: var(--primary-dark);
+      margin-bottom: 0.8rem;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+
+    /* Footer */
+    footer {
+      text-align: center;
+      padding: 2rem;
+      background: var(--card-bg);
+      border-radius: var(--radius);
+      margin-top: 2rem;
+      color: var(--text-light);
+      box-shadow: var(--shadow);
+    }
+
+    .progress-bar {
+      background: var(--border);
+      height: 8px;
+      border-radius: 4px;
+      margin: 2rem 0;
+      overflow: hidden;
+    }
+
+    .progress-fill {
+      background: linear-gradient(90deg, var(--primary), var(--success));
+      height: 100%;
+      width: 0%;
+      transition: width 0.5s ease;
+    }
+
+    /* Responsive */
+    @media (max-width: 768px) {
+      header h1 { font-size: 2rem; }
+      h2 { font-size: 1.4rem; }
+      .section { padding: 1.5rem; }
+      .phrase-box { flex-direction: column; align-items: flex-start; }
+      .audio-btn { align-self: flex-end; }
+      .compass { width: 150px; height: 150px; }
+      .map-grid { 
+        grid-template-columns: repeat(4, 1fr);
+        gap: 8px;
+      }
+      .map-cell {
+        border-radius: 8px;
+        padding: 0.2rem;
+      }
+      .map-cell-icon { font-size: 1.2rem; }
+      .map-cell-label { font-size: 0.55rem; }
+    }
+
+    @media (max-width: 480px) {
+      .map-grid { grid-template-columns: repeat(3, 1fr); }
+    }
+
+    /* Animation */
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(20px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    .section {
+      animation: fadeIn 0.6s ease-out;
+    }
+
+    .section:nth-child(2) { animation-delay: 0.1s; }
+    .section:nth-child(3) { animation-delay: 0.2s; }
+    .section:nth-child(4) { animation-delay: 0.3s; }
+    .section:nth-child(5) { animation-delay: 0.4s; }
+  </style>
+</head>
+<body>
+
+<div class="container">
+  <header>
+    <h1>🗺️ Asking for Directions</h1>
+    <p>Master the essential English phrases to navigate any city with confidence</p>
+    <span class="level-badge">A1-A2 Level • Complete Guide</span>
+    
+    <div class="progress-bar">
+      <div class="progress-fill" id="progressBar"></div>
+    </div>
+    <p style="font-size: 0.85rem; color: var(--text-light);">Scroll down to track your progress</p>
+  </header>
+
+  <!-- Section 1: Visual Compass -->
+  <div class="section">
+    <h2>🧭 Direction Basics</h2>
+    <div class="compass-container">
+      <div class="compass">
+        <div class="compass-dir compass-n">N</div>
+        <div class="compass-dir compass-e">E</div>
+        <div class="compass-dir compass-s">S</div>
+        <div class="compass-dir compass-w">W</div>
+        <div class="compass-arrow"></div>
+        <div class="compass-center"></div>
+      </div>
+    </div>
+    <p style="text-align: center; color: var(--text-light); margin-top: 1rem;">
+      <strong>Remember:</strong> North is always up on maps. Use the compass directions to orient yourself!
+    </p>
+  </div>
+
+  <!-- Section 2: Essential Vocabulary -->
+  <div class="section">
+    <h2>📍 Essential Vocabulary</h2>
+    
+    <h3>🧭 Direction Words</h3>
+    <div class="grid-2">
+      <div class="phrase-box">
+        <div class="phrase-content">
+          <div class="phrase-text">Go straight / straight ahead</div>
+          <div class="phrase-category">Continue forward without turning</div>
+        </div>
+        <button class="audio-btn" onclick="speak('Go straight ahead')">
+          <span class="speaker-icon">🔊</span> Listen
+        </button>
+      </div>
+      
+      <div class="phrase-box">
+        <div class="phrase-content">
+          <div class="phrase-text">Go straight past [place]</div>
+          <div class="phrase-category">Continue forward beyond a landmark</div>
+        </div>
+        <button class="audio-btn" onclick="speak('Go straight past the mosque')">
+          <span class="speaker-icon">🔊</span> Listen
+        </button>
+      </div>
+      
+      <div class="phrase-box">
+        <div class="phrase-content">
+          <div class="phrase-text">Turn left / Turn right</div>
+          <div class="phrase-category">Change direction</div>
+        </div>
+        <button class="audio-btn" onclick="speak('Turn left. Turn right.')">
+          <span class="speaker-icon">🔊</span> Listen
+        </button>
+      </div>
+      
+      <div class="phrase-box">
+        <div class="phrase-content">
+          <div class="phrase-text">Take the first/second [street] on the left/right</div>
+          <div class="phrase-category">Specific turn instruction</div>
+        </div>
+        <button class="audio-btn" onclick="speak('Take the second street on the right')">
+          <span class="speaker-icon">🔊</span> Listen
+        </button>
+      </div>
+      
+      <div class="phrase-box">
+        <div class="phrase-content">
+          <div class="phrase-text">Go past [landmark]</div>
+          <div class="phrase-category">Continue beyond something</div>
+        </div>
+        <button class="audio-btn" onclick="speak('Go past the mosque')">
+          <span class="speaker-icon">🔊</span> Listen
+        </button>
+      </div>
+      
+      <div class="phrase-box">
+        <div class="phrase-content">
+          <div class="phrase-text">Cross the street / road</div>
+          <div class="phrase-category">Go to the other side</div>
+        </div>
+        <button class="audio-btn" onclick="speak('Cross the street at the traffic lights')">
+          <span class="speaker-icon">🔊</span> Listen
+        </button>
+      </div>
+      
+      <div class="phrase-box">
+        <div class="phrase-content">
+          <div class="phrase-text">It's on your left/right</div>
+          <div class="phrase-category">Location relative to you</div>
+        </div>
+        <button class="audio-btn" onclick="speak('It will be on your left')">
+          <span class="speaker-icon">🔊</span> Listen
+        </button>
+      </div>
+    </div>
+
+    <h3>📏 Position Words</h3>
+    <div class="grid-3">
+      <div class="card">
+        <h4>📍 next to</h4>
+        <p>Beside something<br><em>"It's next to the bank"</em></p>
+      </div>
+      <div class="card">
+        <h4>↔️ between</h4>
+        <p>In the middle of two things<br><em>"Between the pharmacy and the café"</em></p>
+      </div>
+      <div class="card">
+        <h4>🔄 opposite / across from</h4>
+        <p>On the other side<br><em>"Opposite the park"</em></p>
+      </div>
+      <div class="card">
+        <h4>📐 on the corner of</h4>
+        <p>At the intersection<br><em>"On the corner of Main St and 5th Ave"</em></p>
+      </div>
+      <div class="card">
+        <h4>↪️ around the corner</h4>
+        <p>Very close, just after a turn<br><em>"Just around the corner"</em></p>
+      </div>
+      <div class="card">
+        <h4>⬆️ in front of</h4>
+        <p>Ahead of something<br><em>"In front of the museum"</em></p>
+      </div>
+    </div>
+
+    <h3>⏱️ Distance & Time</h3>
+    <div class="grid-2">
+      <div class="phrase-box">
+        <div class="phrase-content">
+          <div class="phrase-text">It's about a 5-minute walk</div>
+          <div class="phrase-category">Short distance on foot</div>
+        </div>
+        <button class="audio-btn" onclick="speak('It is about a five minute walk')">
+          <span class="speaker-icon">🔊</span> Listen
+        </button>
+      </div>
+      
+      <div class="phrase-box">
+        <div class="phrase-content">
+          <div class="phrase-text">It's 200 meters down this road</div>
+          <div class="phrase-category">Specific distance</div>
+        </div>
+        <button class="audio-btn" onclick="speak('It is two hundred meters down this road')">
+          <span class="speaker-icon">🔊</span> Listen
+        </button>
+      </div>
+      
+      <div class="phrase-box">
+        <div class="phrase-content">
+          <div class="phrase-text">It's quite near / not far</div>
+          <div class="phrase-category">Close location</div>
+        </div>
+        <button class="audio-btn" onclick="speak('It is quite near')">
+          <span class="speaker-icon">🔊</span> Listen
+        </button>
+      </div>
+      
+      <div class="phrase-box">
+        <div class="phrase-content">
+          <div class="phrase-text">It's a bit far / about 20 minutes</div>
+          <div class="phrase-category">Longer distance</div>
+        </div>
+        <button class="audio-btn" onclick="speak('It is a bit far, about twenty minutes')">
+          <span class="speaker-icon">🔊</span> Listen
+        </button>
+      </div>
+      
+      <div class="phrase-box">
+        <div class="phrase-content">
+          <div class="phrase-text">You can't miss it</div>
+          <div class="phrase-category">It's obvious/easy to find</div>
+        </div>
+        <button class="audio-btn" onclick="speak('You can\'t miss it')">
+          <span class="speaker-icon">🔊</span> Listen
+        </button>
+      </div>
+      
+      <div class="phrase-box">
+        <div class="phrase-content">
+          <div class="phrase-text">Within walking distance</div>
+          <div class="phrase-category">Close enough to walk</div>
+        </div>
+        <button class="audio-btn" onclick="speak('It is within walking distance')">
+          <span class="speaker-icon">🔊</span> Listen
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Section 3: Questions About Time -->
+  <div class="section">
+    <h2>⏰ Asking About Time</h2>
+    
+    <div class="tip-box">
+      <div class="tip-icon">💡</div>
+      <div class="tip-content">
+        <h4>Useful for Planning</h4>
+        <p>When asking for directions, you often need to know about opening hours, schedules, and timing. These questions will help!</p>
+      </div>
+    </div>
+
+    <h3>🕐 Opening & Closing Times</h3>
+    <div class="phrase-box">
+      <div class="phrase-content">
+        <div class="phrase-text">What time does it open?</div>
+        <div class="phrase-category">Asking about opening time</div>
+      </div>
+      <button class="audio-btn" onclick="speak('What time does it open?')">
+        <span class="speaker-icon">🔊</span> Listen
+      </button>
+    </div>
+    
+    <div class="phrase-box">
+      <div class="phrase-content">
+        <div class="phrase-text">What time does it close?</div>
+        <div class="phrase-category">Asking about closing time</div>
+      </div>
+      <button class="audio-btn" onclick="speak('What time does it close?')">
+        <span class="speaker-icon">🔊</span> Listen
+      </button>
+    </div>
+    
+    <div class="phrase-box">
+      <div class="phrase-content">
+        <div class="phrase-text">What are the opening hours?</div>
+        <div class="phrase-category">Asking about schedule</div>
+      </div>
+      <button class="audio-btn" onclick="speak('What are the opening hours?')">
+        <span class="speaker-icon">🔊</span> Listen
+      </button>
+    </div>
+    
+    <div class="phrase-box">
+      <div class="phrase-content">
+        <div class="phrase-text">Is it open on Sundays?</div>
+        <div class="phrase-category">Asking about specific days</div>
+      </div>
+      <button class="audio-btn" onclick="speak('Is it open on Sundays?')">
+        <span class="speaker-icon">🔊</span> Listen
+      </button>
+    </div>
+
+    <h3>🚌 Transport & Schedules</h3>
+    <div class="phrase-box">
+      <div class="phrase-content">
+        <div class="phrase-text">What time is the next bus/train?</div>
+        <div class="phrase-category">Asking about schedule</div>
+      </div>
+      <button class="audio-btn" onclick="speak('What time is the next bus?')">
+        <span class="speaker-icon">🔊</span> Listen
+      </button>
+    </div>
+    
+    <div class="phrase-box">
+      <div class="phrase-content">
+        <div class="phrase-text">How often does it run?</div>
+        <div class="phrase-category">Asking about frequency</div>
+      </div>
+      <button class="audio-btn" onclick="speak('How often does the bus run?')">
+        <span class="speaker-icon">🔊</span> Listen
+      </button>
+    </div>
+    
+    <div class="phrase-box">
+      <div class="phrase-content">
+        <div class="phrase-text">When does the last tram leave?</div>
+        <div class="phrase-category">Asking about last departure</div>
+      </div>
+      <button class="audio-btn" onclick="speak('When does the last tram leave?')">
+        <span class="speaker-icon">🔊</span> Listen
+      </button>
+    </div>
+
+    <h3> Duration & Arrival Time</h3>
+    <div class="phrase-box">
+      <div class="phrase-content">
+        <div class="phrase-text">How long does it take to get there?</div>
+        <div class="phrase-category">Asking about duration</div>
+      </div>
+      <button class="audio-btn" onclick="speak('How long does it take to get there?')">
+        <span class="speaker-icon">🔊</span> Listen
+      </button>
+    </div>
+    
+    <div class="phrase-box">
+      <div class="phrase-content">
+        <div class="phrase-text">What time should I arrive?</div>
+        <div class="phrase-category">Asking about recommended time</div>
+      </div>
+      <button class="audio-btn" onclick="speak('What time should I arrive?')">
+        <span class="speaker-icon">🔊</span> Listen
+      </button>
+    </div>
+    
+    <div class="phrase-box">
+      <div class="phrase-content">
+        <div class="phrase-text">How much time do I need?</div>
+        <div class="phrase-category">Asking about time needed</div>
+      </div>
+      <button class="audio-btn" onclick="speak('How much time do I need to visit the museum?')">
+        <span class="speaker-icon">🔊</span> Listen
+      </button>
+    </div>
+    
+    <div class="phrase-box">
+      <div class="phrase-content">
+        <div class="phrase-text">Is there enough time to visit?</div>
+        <div class="phrase-category">Checking if time is sufficient</div>
+      </div>
+      <button class="audio-btn" onclick="speak('Is there enough time to visit before it closes?')">
+        <span class="speaker-icon">🔊</span> Listen
+      </button>
+    </div>
+
+    <h3>🇲🇦 Moroccan Context Examples</h3>
+    <div class="phrase-box">
+      <div class="phrase-content">
+        <div class="phrase-text">What time does the souk open?</div>
+        <div class="phrase-category">Market hours</div>
+      </div>
+      <button class="audio-btn" onclick="speak('What time does the souk open?')">
+        <span class="speaker-icon">🔊</span> Listen
+      </button>
+    </div>
+    
+    <div class="phrase-box">
+      <div class="phrase-content">
+        <div class="phrase-text">What time is prayer time at the mosque?</div>
+        <div class="phrase-category">Religious schedule</div>
+      </div>
+      <button class="audio-btn" onclick="speak('What time is prayer time at the mosque?')">
+        <span class="speaker-icon">🔊</span> Listen
+      </button>
+    </div>
+    
+    <div class="phrase-box">
+      <div class="phrase-content">
+        <div class="phrase-text">How long is the wait for a taxi?</div>
+        <div class="phrase-category">Transport timing</div>
+      </div>
+      <button class="audio-btn" onclick="speak('How long is the wait for a taxi?')">
+        <span class="speaker-icon">🔊</span> Listen
+      </button>
+    </div>
+  </div>
+
+  <!-- Section 4: How to Ask -->
+  <div class="section">
+    <h2>❓ How to Ask for Directions</h2>
+    
+    <div class="tip-box">
+      <div class="tip-icon">💡</div>
+      <div class="tip-content">
+        <h4>Always Start Politely!</h4>
+        <p>In English-speaking cultures, jumping straight to the question can sound rude. Always begin with "Excuse me" or a similar polite phrase.</p>
+      </div>
+    </div>
+
+    <h3> Simple & Direct (A1 Level)</h3>
+    <div class="phrase-box">
+      <div class="phrase-content">
+        <div class="phrase-text">Excuse me, where is the [place]?</div>
+        <div class="phrase-category">Most basic question</div>
+      </div>
+      <button class="audio-btn" onclick="speak('Excuse me, where is the train station?')">
+        <span class="speaker-icon">🔊</span> Listen
+      </button>
+    </div>
+    
+    <div class="phrase-box">
+      <div class="phrase-content">
+        <div class="phrase-text">How do I get to [place]?</div>
+        <div class="phrase-category">Asking for route</div>
+      </div>
+      <button class="audio-btn" onclick="speak('How do I get to the medina?')">
+        <span class="speaker-icon">🔊</span> Listen
+      </button>
+    </div>
+    
+    <div class="phrase-box">
+      <div class="phrase-content">
+        <div class="phrase-text">Is there a [place] near here?</div>
+        <div class="phrase-category">Searching nearby</div>
+      </div>
+      <button class="audio-btn" onclick="speak('Is there a pharmacy near here?')">
+        <span class="speaker-icon">🔊</span> Listen
+      </button>
+    </div>
+
+    <h3>🟡 More Polite & Natural (A2 Level)</h3>
+    <div class="phrase-box">
+      <div class="phrase-content">
+        <div class="phrase-text">Could you tell me where the [place] is?</div>
+        <div class="phrase-category">Polite indirect question</div>
+      </div>
+      <button class="audio-btn" onclick="speak('Could you tell me where the post office is?')">
+        <span class="speaker-icon">🔊</span> Listen
+      </button>
+    </div>
+    
+    <div class="phrase-box">
+      <div class="phrase-content">
+        <div class="phrase-text">Do you know how I can get to [place]?</div>
+        <div class="phrase-category">Friendly inquiry</div>
+      </div>
+      <button class="audio-btn" onclick="speak('Do you know how I can get to Hassan II Mosque?')">
+        <span class="speaker-icon">🔊</span> Listen
+      </button>
+    </div>
+    
+    <div class="phrase-box">
+      <div class="phrase-content">
+        <div class="phrase-text">Can you help me find [place]?</div>
+        <div class="phrase-category">Asking for assistance</div>
+      </div>
+      <button class="audio-btn" onclick="speak('Can you help me find the nearest bus stop?')">
+        <span class="speaker-icon">🔊</span> Listen
+      </button>
+    </div>
+    
+    <div class="phrase-box">
+      <div class="phrase-content">
+        <div class="phrase-text">What's the best way to reach [place]?</div>
+        <div class="phrase-category">Asking for optimal route</div>
+      </div>
+      <button class="audio-btn" onclick="speak('What is the best way to reach the airport?')">
+        <span class="speaker-icon">🔊</span> Listen
+      </button>
+    </div>
+
+    <h3>🔵 Extra Polite / Advanced (B1+)</h3>
+    <div class="phrase-box">
+      <div class="phrase-content">
+        <div class="phrase-text">I'm a bit lost. Could you point me in the right direction?</div>
+        <div class="phrase-category">Admitting you're lost politely</div>
+      </div>
+      <button class="audio-btn" onclick="speak('I am a bit lost. Could you point me in the right direction?')">
+        <span class="speaker-icon">🔊</span> Listen
+      </button>
+    </div>
+    
+    <div class="phrase-box">
+      <div class="phrase-content">
+        <div class="phrase-text">Would you mind telling me how to get to...?</div>
+        <div class="phrase-category">Very polite request</div>
+      </div>
+      <button class="audio-btn" onclick="speak('Would you mind telling me how to get to the museum?')">
+        <span class="speaker-icon">🔊</span> Listen
+      </button>
+    </div>
+    
+    <div class="phrase-box">
+      <div class="phrase-content">
+        <div class="phrase-text">I'm trying to find [place]. Any idea where it is?</div>
+        <div class="phrase-category">Casual but polite</div>
+      </div>
+      <button class="audio-btn" onclick="speak('I am trying to find the Grand Poste. Any idea where it is?')">
+        <span class="speaker-icon">🔊</span> Listen
+      </button>
+    </div>
+
+    <h3>🆘 If You Don't Understand</h3>
+    <div class="phrase-box">
+      <div class="phrase-content">
+        <div class="phrase-text">Sorry, could you repeat that?</div>
+        <div class="phrase-category">Asking for repetition</div>
+      </div>
+      <button class="audio-btn" onclick="speak('Sorry, could you repeat that?')">
+        <span class="speaker-icon">🔊</span> Listen
+      </button>
+    </div>
+    
+    <div class="phrase-box">
+      <div class="phrase-content">
+        <div class="phrase-text">Could you speak more slowly, please?</div>
+        <div class="phrase-category">Asking for slower speech</div>
+      </div>
+      <button class="audio-btn" onclick="speak('Could you speak more slowly, please?')">
+        <span class="speaker-icon">🔊</span> Listen
+      </button>
+    </div>
+    
+    <div class="phrase-box">
+      <div class="phrase-content">
+        <div class="phrase-text">So, I turn left after the [landmark], right?</div>
+        <div class="phrase-category">Confirming understanding</div>
+      </div>
+      <button class="audio-btn" onclick="speak('So, I turn left after the mosque, right?')">
+        <span class="speaker-icon">🔊</span> Listen
+      </button>
+    </div>
+    
+    <div class="phrase-box">
+      <div class="phrase-content">
+        <div class="phrase-text">How far is it exactly?</div>
+        <div class="phrase-category">Asking for specific distance</div>
+      </div>
+      <button class="audio-btn" onclick="speak('How far is it exactly?')">
+        <span class="speaker-icon">🔊</span> Listen
+      </button>
+    </div>
+
+    <h3>🇲🇦 Moroccan Context Examples</h3>
+    <div class="phrase-box">
+      <div class="phrase-content">
+        <div class="phrase-text">Excuse me, how do I get to the tram station?</div>
+        <div class="phrase-category">Casablanca/Rabat context</div>
+      </div>
+      <button class="audio-btn" onclick="speak('Excuse me, how do I get to the tram station?')">
+        <span class="speaker-icon">🔊</span> Listen
+      </button>
+    </div>
+    
+    <div class="phrase-box">
+      <div class="phrase-content">
+        <div class="phrase-text">Could you tell me where the nearest pharmacy is?</div>
+        <div class="phrase-category">Urgent need</div>
+      </div>
+      <button class="audio-btn" onclick="speak('Could you tell me where the nearest pharmacy is?')">
+        <span class="speaker-icon">🔊</span> Listen
+      </button>
+    </div>
+    
+    <div class="phrase-box">
+      <div class="phrase-content">
+        <div class="phrase-text">Is Jemaa el-Fna within walking distance?</div>
+        <div class="phrase-category">Marrakech landmark</div>
+      </div>
+      <button class="audio-btn" onclick="speak('Is Jemaa el-Fna within walking distance?')">
+        <span class="speaker-icon">🔊</span> Listen
+      </button>
+    </div>
+  </div>
+
+  <!-- Section 5: Enhanced Visual Map -->
+  <div class="section">
+    <h2>🗺️ Understanding Directions Visually</h2>
+    
+    <div class="map-visual">
+      <div class="map-title">📍 Interactive City Map: From Hotel to Museum</div>
+      <div class="map-grid">
+        <div class="map-cell start" title="You are here">
+          <div class="map-cell-icon">🏨</div>
+          <div class="map-cell-label">Hotel<br>Start</div>
+        </div>
+        <div class="map-cell street">
+          <div class="map-cell-icon">🛣️</div>
+          <div class="map-cell-label">Main<br>Street</div>
+        </div>
+        <div class="map-cell landmark">
+          <div class="map-cell-icon">🕌</div>
+          <div class="map-cell-label">Grand<br>Mosque</div>
+        </div>
+        <div class="map-cell street">
+          <div class="map-cell-icon">🛣️</div>
+          <div class="map-cell-label">Avenue<br>Mohammed</div>
+        </div>
+        <div class="map-cell shop">
+          <div class="map-cell-icon">🏪</div>
+          <div class="map-cell-label">Super<br>Market</div>
+        </div>
+        
+        <div class="map-cell street">
+          <div class="map-cell-icon">🛣️</div>
+          <div class="map-cell-label">Rue de<br>la Liberté</div>
+        </div>
+        <div class="map-cell street">
+          <div class="map-cell-icon">️</div>
+          <div class="map-cell-label">Central<br>Plaza</div>
+        </div>
+        <div class="map-cell landmark">
+          <div class="map-cell-icon">🏦</div>
+          <div class="map-cell-label">Central<br>Bank</div>
+        </div>
+        <div class="map-cell shop">
+          <div class="map-cell-icon">☕</div>
+          <div class="map-cell-label">Café<br>Central</div>
+        </div>
+        <div class="map-cell street">
+          <div class="map-cell-icon">🛣️</div>
+          <div class="map-cell-label">Boulevard<br>Hassan</div>
+        </div>
+        
+        <div class="map-cell landmark">
+          <div class="map-cell-icon">🌳</div>
+          <div class="map-cell-label">City<br>Park</div>
+        </div>
+        <div class="map-cell shop">
+          <div class="map-cell-icon">💊</div>
+          <div class="map-cell-label">Pharmacy</div>
+        </div>
+        <div class="map-cell street">
+          <div class="map-cell-icon">🛣️</div>
+          <div class="map-cell-label">Tourist<br>Zone</div>
+        </div>
+        <div class="map-cell landmark">
+          <div class="map-cell-icon">🏛️</div>
+          <div class="map-cell-label">National<br>Museum</div>
+        </div>
+        <div class="map-cell destination">
+          <div class="map-cell-icon">🎯</div>
+          <div class="map-cell-label">Museum<br>Destination</div>
+        </div>
+      </div>
+      
+      <div class="map-legend">
+        <div class="legend-item">
+          <div class="legend-color" style="background: linear-gradient(135deg, #dbeafe, #bfdbfe); border-color: var(--primary);"></div>
+          <span>Start Point</span>
+        </div>
+        <div class="legend-item">
+          <div class="legend-color" style="background: linear-gradient(135deg, #fef3c7, #fde68a); border-color: var(--accent);"></div>
+          <span>Destination</span>
+        </div>
+        <div class="legend-item">
+          <div class="legend-color" style="background: linear-gradient(135deg, #d1fae5, #a7f3d0); border-color: var(--success);"></div>
+          <span>Landmark</span>
+        </div>
+        <div class="legend-item">
+          <div class="legend-color" style="background: linear-gradient(135deg, #fce7f3, #fbcfe8); border-color: var(--pink);"></div>
+          <span>Shop/Café</span>
+        </div>
+        <div class="legend-item">
+          <div class="legend-color" style="background: linear-gradient(135deg, #f1f5f9, #e2e8f0); border-color: #cbd5e1;"></div>
+          <span>Street</span>
+        </div>
+      </div>
+
+      <div class="map-instructions">
+        <h4>📝 Step-by-Step Directions:</h4>
+        <ol>
+          <li><strong>Start</strong> at the <strong>Hotel</strong> (blue square)</li>
+          <li><strong>Go straight</strong> along Main Street, <strong>past</strong> the Grand Mosque</li>
+          <li><strong>Continue</strong> on Avenue Mohammed until you reach the Central Bank</li>
+          <li><strong>Turn right</strong> at the bank onto Boulevard Hassan</li>
+          <li><strong>Go straight past</strong> the City Park and Pharmacy</li>
+          <li><strong>Arrive</strong> at the National Museum (yellow square) - it's on your left!</li>
+        </ol>
+        <p style="margin-top: 1rem; font-style: italic; color: var(--text-light);">
+          <strong>Total time:</strong> About 10 minutes walking • <strong>Distance:</strong> 800 meters
+        </p>
+      </div>
+    </div>
+  </div>
+
+  <!-- Section 6: Sample Dialogue -->
+  <div class="section">
+    <h2>💬 Complete Sample Dialogue</h2>
+    
+    <div class="dialogue-box">
+      <div class="dialogue-line">
+        <span class="speaker">Tourist:</span>
+        <span class="dialogue-text">Excuse me, could you tell me how to get to the train station, please?</span>
+      </div>
+      <div class="dialogue-line">
+        <span class="speaker">Local:</span>
+        <span class="dialogue-text">Of course! Go straight along this road for about 200 meters. You'll see a traffic light. Turn left there.</span>
+      </div>
+      <div class="dialogue-line">
+        <span class="speaker">Tourist:</span>
+        <span class="dialogue-text">Okay, turn left at the traffic light...</span>
+      </div>
+      <div class="dialogue-line">
+        <span class="speaker">Local:</span>
+        <span class="dialogue-text">Yes, then continue for another 100 meters. The station will be on your right, next to the bank.</span>
+      </div>
+      <div class="dialogue-line">
+        <span class="speaker">Tourist:</span>
+        <span class="dialogue-text">Is it far?</span>
+      </div>
+      <div class="dialogue-line">
+        <span class="speaker">Local:</span>
+        <span class="dialogue-text">No, it's quite near – about a 5-minute walk. You can't miss it!</span>
+      </div>
+      <div class="dialogue-line">
+        <span class="speaker">Tourist:</span>
+        <span class="dialogue-text">Thank you so much for your help!</span>
+      </div>
+      <div class="dialogue-line">
+        <span class="speaker">Local:</span>
+        <span class="dialogue-text">You're welcome! Have a good trip!</span>
+      </div>
+    </div>
+
+    <button class="audio-btn" onclick="speak('Excuse me, could you tell me how to get to the train station, please? Of course! Go straight along this road for about 200 meters. You will see a traffic light. Turn left there. Yes, then continue for another 100 meters. The station will be on your right, next to the bank. No, it is quite near, about a 5 minute walk. You can\'t miss it! Thank you so much for your help! You are welcome! Have a good trip!')" style="margin-top: 1rem; width: 100%; justify-content: center;">
+      <span class="speaker-icon">🔊</span> Listen to Full Dialogue
+    </button>
+  </div>
+
+  <!-- Section 7: Common Mistakes -->
+  <div class="section">
+    <h2>⚠️ Common Mistakes to Avoid</h2>
+    
+    <table class="comparison-table">
+      <thead>
+        <tr>
+          <th>❌ Incorrect</th>
+          <th>✅ Correct</th>
+          <th>💡 Why</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><span class="mistake">Go to left</span></td>
+          <td><span class="correct">Turn left</span></td>
+          <td>"Turn left" is the natural phrase</td>
+        </tr>
+        <tr>
+          <td><span class="mistake">Where is at the bank?</span></td>
+          <td><span class="correct">Where is the bank?</span></td>
+          <td>No preposition after "where is"</td>
+        </tr>
+        <tr>
+          <td><span class="mistake">It's in front the mosque</span></td>
+          <td><span class="correct">It's in front OF the mosque</span></td>
+          <td>Preposition "of" is required</td>
+        </tr>
+        <tr>
+          <td><span class="mistake">Where is the station?</span> (no greeting)</td>
+          <td><span class="correct">Excuse me, where is the station?</span></td>
+          <td>Always start politely in English</td>
+        </tr>
+        <tr>
+          <td><span class="mistake">Can you tell me where is the bank?</span></td>
+          <td><span class="correct">Can you tell me where the bank IS?</span></td>
+          <td>Word order changes in indirect questions</td>
+        </tr>
+        <tr>
+          <td><span class="mistake">Take left on the street</span></td>
+          <td><span class="correct">Turn left INTO the street</span></td>
+          <td>Use correct prepositions</td>
+        </tr>
+      </tbody>
+    </table>
+
+    <div class="tip-box">
+      <div class="tip-icon">🎯</div>
+      <div class="tip-content">
+        <h4>Word Order in Polite Questions</h4>
+        <p>Notice: "Where <strong>is</strong> the bank?" (direct) vs "Could you tell me where the bank <strong>is</strong>?" (indirect). The subject comes BEFORE the verb in polite questions!</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- Section 8: Cultural Tips -->
+  <div class="section">
+    <h2>🌍 Cultural & Politeness Tips</h2>
+    
+    <div class="grid-2">
+      <div class="card">
+        <h4>🇬🇧 English-Speaking Culture</h4>
+        <ul>
+          <li><strong>Always say "Excuse me"</strong> before asking a stranger</li>
+          <li><strong>Use "Could" instead of "Can"</strong> for extra politeness</li>
+          <li><strong>Say "please" and "thank you"</strong> - these are expected</li>
+          <li><strong>It's okay to ask for repetition</strong>: "Sorry, could you repeat that?"</li>
+          <li><strong>Confirm understanding</strong>: "So, I turn left at the mosque, right?"</li>
+          <li><strong>Smile and make eye contact</strong> - shows friendliness</li>
+        </ul>
+      </div>
+      
+      <div class="card">
+        <h4>🇲🇦 Moroccan Context</h4>
+        <ul>
+          <li><strong>Medina streets</strong>: "Is it easy to find on foot?" (narrow streets can be confusing)</li>
+          <li><strong>Tram/Bus</strong>: "Which stop should I get off at?"</li>
+          <li><strong>Helping tourists</strong>: Use landmarks like "behind the main square"</li>
+          <li><strong>Jemaa el-Fna</strong>: "Go straight until you see the big square"</li>
+          <li><strong>Riad/Hotel</strong>: "It's just behind the fountain, next to the café"</li>
+          <li><strong>Grand Poste</strong>: Common landmark in many cities</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="tip-box">
+      <div class="tip-icon">💬</div>
+      <div class="tip-content">
+        <h4>Thanking People</h4>
+        <p>Always end with gratitude! Use: "Thank you so much!", "I really appreciate your help!", or "Thanks for your time!" This leaves a positive impression.</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- Section 9: Practice Activities -->
+  <div class="section">
+    <h2>🎲 Practice Activities</h2>
+    
+    <div class="activity-box">
+      <h4>🔄 Activity 1: Polite Question Ladder</h4>
+      <p><strong>In pairs:</strong> Take a simple question like "Where is the bus stop?" and make it progressively more polite:</p>
+      <ol style="margin-left: 1.5rem; margin-top: 0.5rem;">
+        <li>"Excuse me, where is the bus stop?"</li>
+        <li>"Could you tell me where the bus stop is?"</li>
+        <li>"Sorry to bother you, but do you know how I can get to the bus stop?"</li>
+      </ol>
+    </div>
+
+    <div class="activity-box">
+      <h4>🗺️ Activity 2: Map Role-Play</h4>
+      <p><strong>In groups of 3:</strong></p>
+      <ul style="margin-left: 1.5rem; margin-top: 0.5rem;">
+        <li><strong>Tourist:</strong> Asks for directions to a landmark</li>
+        <li><strong>Local:</strong> Gives detailed directions using vocabulary from this lesson</li>
+        <li><strong>Observer:</strong> Checks for polite phrases and correct grammar</li>
+      </ul>
+      <p style="margin-top: 0.5rem;"><em>Rotate roles every 5 minutes!</em></p>
+    </div>
+
+    <div class="activity-box">
+      <h4>🎧 Activity 3: Listen & Draw</h4>
+      <p><strong>Individual then pairs:</strong></p>
+      <ol style="margin-left: 1.5rem; margin-top: 0.5rem;">
+        <li>Teacher gives directions: "Start at the mosque. Go straight. Turn left at the pharmacy. The bank is on your right."</li>
+        <li>Draw the route on paper</li>
+        <li>Compare with a partner - did you end up in the same place?</li>
+      </ol>
+    </div>
+
+    <div class="activity-box">
+      <h4>💡 Activity 4: Problem-Solving</h4>
+      <p><strong>Discuss these scenarios:</strong></p>
+      <ul style="margin-left: 1.5rem; margin-top: 0.5rem;">
+        <li>"You asked for directions, but the person spoke very fast. What do you say?"</li>
+        <li>"The person says 'It's near,' but you don't know how near. What do you ask?"</li>
+        <li>"You think you're lost. How do you ask for help?"</li>
+      </ul>
+    </div>
+
+    <div class="activity-box">
+      <h4> Activity 5: Real-Life Challenge</h4>
+      <p><strong>Homework:</strong></p>
+      <ol style="margin-left: 1.5rem; margin-top: 0.5rem;">
+        <li>Write down 2 places you visit often in your city</li>
+        <li>Practice asking for directions to them in English (aloud, 3 times each)</li>
+        <li>Record yourself and listen - are you using polite phrases?</li>
+      </ol>
+    </div>
+  </div>
+
+  <!-- Section 10: Quick Reference -->
+  <div class="section">
+    <h2>📋 Quick Reference Cheat Sheet</h2>
+    
+    <div style="background: linear-gradient(135deg, #f0f9ff, #e0f2fe); padding: 1.5rem; border-radius: 12px; border: 2px solid var(--primary);">
+      <h3 style="margin-top: 0; color: var(--primary-dark);">🗣️ ASKING FOR DIRECTIONS</h3>
+      
+      <p><strong>✅ START POLITELY:</strong></p>
+      <ul style="margin-left: 1.5rem; margin-bottom: 1rem;">
+        <li>Excuse me…</li>
+        <li>Sorry to bother you…</li>
+      </ul>
+      
+      <p><strong>✅ CORE QUESTIONS:</strong></p>
+      <ul style="margin-left: 1.5rem; margin-bottom: 1rem;">
+        <li>Where is the ______?</li>
+        <li>How do I get to ______?</li>
+        <li>Could you tell me where ______ is?</li>
+        <li>Is there a ______ near here?</li>
+      </ul>
+      
+      <p><strong>✅ IF YOU DON'T UNDERSTAND:</strong></p>
+      <ul style="margin-left: 1.5rem; margin-bottom: 1rem;">
+        <li>Sorry, could you repeat that?</li>
+        <li>Could you speak more slowly, please?</li>
+        <li>So, I turn left after the ______, right?</li>
+      </ul>
+      
+      <p><strong>✅ THANKING:</strong></p>
+      <ul style="margin-left: 1.5rem; margin-bottom: 1rem;">
+        <li>Thank you so much!</li>
+        <li>I really appreciate your help.</li>
+      </ul>
+      
+      <p><strong>⏰ ASKING ABOUT TIME:</strong></p>
+      <ul style="margin-left: 1.5rem; margin-bottom: 1rem;">
+        <li>What time does it open/close?</li>
+        <li>How long does it take to get there?</li>
+        <li>What time is the next bus/train?</li>
+        <li>What time should I arrive?</li>
+      </ul>
+      
+      <p><strong>🗺️ KEY DIRECTION WORDS:</strong></p>
+      <ul style="margin-left: 1.5rem; margin-bottom: 1rem;">
+        <li>Go straight | Go straight past | Turn left/right | Take the first/second on the left</li>
+        <li>Next to | Between | Opposite | On the corner | Around the corner</li>
+        <li>5-minute walk | 200 meters | You can't miss it</li>
+      </ul>
+      
+      <p><strong>🇲🇦 MOROCCAN EXAMPLES:</strong></p>
+      <ul style="margin-left: 1.5rem;">
+        <li>"Excuse me, how do I get to the tram station?"</li>
+        <li>"Could you tell me where the nearest pharmacy is?"</li>
+        <li>"Is Jemaa el-Fna within walking distance?"</li>
+      </ul>
+    </div>
+  </div>
+
+  <footer>
+    <p style="font-size: 1.1rem; margin-bottom: 0.5rem;">✨ <strong>You've completed the lesson!</strong></p>
+    <p>Practice these phrases daily to build confidence. Remember: even simple, polite questions open doors!</p>
+    <p style="margin-top: 1rem; font-size: 0.9rem; color: var(--text-light);">
+      © 2025 Interactive ESL Lessons | Audio works offline in all modern browsers<br>
+      Print this page (Ctrl+P) for offline study
+    </p>
+  </footer>
+</div>
+
+<script>
+  // Text-to-Speech Function with better voice selection
+  function speak(text) {
+    if (!('speechSynthesis' in window)) {
+      alert('Your browser does not support text-to-speech. Please use Chrome, Edge, or Safari.');
+      return;
+    }
+    
+    // Cancel any current speech
+    window.speechSynthesis.cancel();
+    
+    const utterance = new SpeechSynthesisUtterance(text);
+    utterance.lang = 'en-US';
+    utterance.rate = 0.85; // Slower for learners
+    utterance.pitch = 1;
+    utterance.volume = 1;
+    
+    // Try to get a clear English voice
+    const voices = window.speechSynthesis.getVoices();
+    const preferredVoice = voices.find(v => 
+      v.lang.startsWith('en') && 
+      (v.name.includes('Female') || v.name.includes('Samantha') || v.name.includes('Google US English'))
+    ) || voices.find(v => v.lang.startsWith('en'));
+    
+    if (preferredVoice) {
+      utterance.voice = preferredVoice;
+    }
+    
+    // Visual feedback
+    const buttons = document.querySelectorAll('.audio-btn');
+    buttons.forEach(btn => {
+      if (btn.getAttribute('onclick').includes(text.substring(0, 30))) {
+        btn.style.background = 'linear-gradient(135deg, #10b981, #059669)';
+        btn.innerHTML = '<span class="speaker-icon">🔊</span> Speaking...';
+        setTimeout(() => {
+          btn.style.background = '';
+          btn.innerHTML = '<span class="speaker-icon">🔊</span> Listen';
+        }, 3000);
+      }
+    });
+    
+    window.speechSynthesis.speak(utterance);
+  }
+
+  // Load voices (needed for some browsers)
+  if (window.speechSynthesis.onvoiceschanged !== undefined) {
+    window.speechSynthesis.onvoiceschanged = () => {
+      window.speechSynthesis.getVoices();
+    };
+  }
+
+  // Progress bar tracking
+  const sections = document.querySelectorAll('.section');
+  const progressBar = document.getElementById('progressBar');
+  
+  function updateProgress() {
+    const scrollPosition = window.scrollY;
+    const windowHeight = window.innerHeight;
+    const documentHeight = document.documentElement.scrollHeight - windowHeight;
+    const progress = (scrollPosition / documentHeight) * 100;
+    progressBar.style.width = progress + '%';
+  }
+  
+  window.addEventListener('scroll', updateProgress);
+  window.addEventListener('load', updateProgress);
+
+  // Add smooth scroll behavior
+  document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+    anchor.addEventListener('click', function (e) {
+      e.preventDefault();
+      const target = document.querySelector(this.getAttribute('href'));
+      if (target) {
+        target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      }
+    });
+  });
+
+  // Initialize voices
+  window.speechSynthesis.getVoices();
+</script>
+
+</body>
+</html> 
+
